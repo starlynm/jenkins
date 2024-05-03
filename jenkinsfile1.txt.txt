@@ -1,7 +1,14 @@
-stage('Build') {
+
+
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
             steps {
                 echo 'Building the code using Maven'
-                sh 'mvn clean package' // Build the code using Maven
+                // Placeholder for actual build commands using Maven
             }
             post {
                 success {
@@ -10,13 +17,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Build', 'FAILURE')
                 }
-                // Placeholder for actual build commands using Maven
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests with Maven'
-                sh 'mvn test' // Run unit and integration tests with Maven
+                echo 'Running unit and integration tests'
+                // Placeholder for actual commands to run unit and integration tests
             }
             post {
                 success {
@@ -25,14 +31,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Unit and Integration Tests', 'FAILURE')
                 }
-                echo 'Running unit and integration tests'
-                // Placeholder for actual commands to run unit and integration tests
             }
         }
         stage('Code Analysis') {
             steps {
-                echo 'Running code analysis with SonarQube'
-                sh 'sonar-scanner' // Run code analysis with SonarQube
+                echo 'Running code analysis'
+                // Placeholder for actual commands to run code analysis
             }
             post {
                 success {
@@ -41,14 +45,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Code Analysis', 'FAILURE')
                 }
-                echo 'Running code analysis'
-                // Placeholder for actual commands to run code analysis tool
             }
         }
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan with OWASP Dependency-Check'
-                sh 'dependency-check.sh -out . -format HTML' // Perform security scan with OWASP Dependency-Check
+                echo 'Performing security scan'
+                // Placeholder for actual commands to perform security scan
             }
             post {
                 success {
@@ -57,14 +59,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Security Scan', 'FAILURE')
                 }
-                echo 'Performing security scan'
-                // Placeholder for actual commands to run security scanning tool
             }
         }
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying the application to staging server'
-                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name Staging --s3-location my-bucket/my-app.zip' // Deploy application to staging server
+                // Placeholder for actual commands to deploy to staging server
             }
             post {
                 success {
@@ -73,13 +73,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Deploy to Staging', 'FAILURE')
                 }
-                // Placeholder for actual commands to deploy to staging server
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging environment'
-                sh 'jmeter -n -t mytest.jmx -l results.jtl' // Run integration tests on staging environment
+                // Placeholder for actual commands to run integration tests on staging
             }
             post {
                 success {
@@ -88,13 +87,12 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Integration Tests on Staging', 'FAILURE')
                 }
-                // Placeholder for actual commands to run integration tests on staging
             }
         }
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying the application to production server'
-                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name Production --s3-location my-bucket/my-app.zip' // Deploy application to production server
+                // Placeholder for actual commands to deploy to production server
             }
             post {
                 success {
@@ -103,27 +101,20 @@ stage('Build') {
                 failure {
                     sendEmailNotification('Deploy to Production', 'FAILURE')
                 }
-                // Placeholder for actual commands to deploy to production server
             }
         }
     }
-
+    
     post {
         always {
             sendEmailNotification('Pipeline', currentBuild.result)
-        success {
-            echo 'Pipeline completed successfully'
-            // Placeholder for sending success notification email
-        }
-        failure {
-            echo 'Pipeline failed'
-            // Placeholder for sending failure notification email
         }
     }
 }
 
 def sendEmailNotification(stageName, status) {
-	mail to: "starlymiracle@gmail.com",
-            subject: "Build Status Email",
-            body: "Build success"
+   	mail to: "starlymiracle@gmail.com",
+	subject: "Build Status Email",
+        body: "Build success"
+
 }
