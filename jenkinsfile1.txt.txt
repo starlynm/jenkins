@@ -1,0 +1,117 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the code using Maven'
+                sh 'mvn clean package' // Build the code using Maven
+            }
+            post {
+                success {
+                    sendEmailNotification('Build', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Build', 'FAILURE')
+                }
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit and integration tests with Maven'
+                sh 'mvn test' // Run unit and integration tests with Maven
+            }
+            post {
+                success {
+                    sendEmailNotification('Unit and Integration Tests', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Unit and Integration Tests', 'FAILURE')
+                }
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo 'Running code analysis with SonarQube'
+                sh 'sonar-scanner' // Run code analysis with SonarQube
+            }
+            post {
+                success {
+                    sendEmailNotification('Code Analysis', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Code Analysis', 'FAILURE')
+                }
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan with OWASP Dependency-Check'
+                sh 'dependency-check.sh -out . -format HTML' // Perform security scan with OWASP Dependency-Check
+            }
+            post {
+                success {
+                    sendEmailNotification('Security Scan', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Security Scan', 'FAILURE')
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying the application to staging server'
+                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name Staging --s3-location my-bucket/my-app.zip' // Deploy application to staging server
+            }
+            post {
+                success {
+                    sendEmailNotification('Deploy to Staging', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Deploy to Staging', 'FAILURE')
+                }
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging environment'
+                sh 'jmeter -n -t mytest.jmx -l results.jtl' // Run integration tests on staging environment
+            }
+            post {
+                success {
+                    sendEmailNotification('Integration Tests on Staging', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Integration Tests on Staging', 'FAILURE')
+                }
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying the application to production server'
+                sh 'aws deploy create-deployment --application-name MyApp --deployment-group-name Production --s3-location my-bucket/my-app.zip' // Deploy application to production server
+            }
+            post {
+                success {
+                    sendEmailNotification('Deploy to Production', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Deploy to Production', 'FAILURE')
+                }
+            }
+        }
+    }
+    post {
+        always {
+            sendEmailNotification('Pipeline', currentBuild.result)
+        }
+    }
+}
+
+def sendEmailNotification(stageName, status) {
+    emailext body: "Stage '${stageName}' ${status}",
+             subject: "Pipeline Status: ${status}",
+             to: 'starlymiracle@gmail.com',
+             attachmentsPattern: '**/*.log'
+}
+
