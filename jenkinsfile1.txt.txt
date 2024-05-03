@@ -11,7 +11,7 @@ pipeline {
                success{
                     mail to: "starlymiracle@gmail.com",
                     subject: "Build Status Email",
-                    body: "Build success",
+                    body: "Build success"
                 }
             }
         }
