@@ -7,23 +7,55 @@ pipeline {
                 echo 'Building the code using Maven'
                 // Placeholder for actual build commands using Maven
             }
+            post {
+                success {
+                    sendEmailNotification('Build', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Build', 'FAILURE')
+                }
+            }
         }
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests'
                 // Placeholder for actual commands to run unit and integration tests
             }
+            post {
+                success {
+                    sendEmailNotification('Unit and Integration Tests', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Unit and Integration Tests', 'FAILURE')
+                }
+            }
         }
         stage('Code Analysis') {
             steps {
                 echo 'Running code analysis'
-                // Placeholder for actual commands to run code analysis tool
+                // Placeholder for actual commands to run code analysis
+            }
+            post {
+                success {
+                    sendEmailNotification('Code Analysis', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Code Analysis', 'FAILURE')
+                }
             }
         }
         stage('Security Scan') {
             steps {
                 echo 'Performing security scan'
-                // Placeholder for actual commands to run security scanning tool
+                // Placeholder for actual commands to perform security scan
+            }
+            post {
+                success {
+                    sendEmailNotification('Security Scan', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Security Scan', 'FAILURE')
+                }
             }
         }
         stage('Deploy to Staging') {
@@ -31,11 +63,27 @@ pipeline {
                 echo 'Deploying the application to staging server'
                 // Placeholder for actual commands to deploy to staging server
             }
+            post {
+                success {
+                    sendEmailNotification('Deploy to Staging', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Deploy to Staging', 'FAILURE')
+                }
+            }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging environment'
                 // Placeholder for actual commands to run integration tests on staging
+            }
+            post {
+                success {
+                    sendEmailNotification('Integration Tests on Staging', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Integration Tests on Staging', 'FAILURE')
+                }
             }
         }
         stage('Deploy to Production') {
@@ -43,24 +91,27 @@ pipeline {
                 echo 'Deploying the application to production server'
                 // Placeholder for actual commands to deploy to production server
             }
+            post {
+                success {
+                    sendEmailNotification('Deploy to Production', 'SUCCESS')
+                }
+                failure {
+                    sendEmailNotification('Deploy to Production', 'FAILURE')
+                }
+            }
         }
     }
     
     post {
-        success {
-            echo 'Pipeline completed successfully'
-            // Placeholder for sending success notification email
-        }
-        failure {
-            echo 'Pipeline failed'
-            // Placeholder for sending failure notification email
+        always {
+            sendEmailNotification('Pipeline', currentBuild.result)
         }
     }
 }
 
 def sendEmailNotification(stageName, status) {
-    echo "Sending email notification for stage: ${stageName}, status: ${status}"
-    // Placeholder for sending email notification with status and logs as attachment
+    emailext subject: "Pipeline Status: ${status}",
+             body: "Stage '${stageName}' ${status}",
+             to: 'starlymiracle@gmail.com',
+             attachLog: true
 }
-
-
