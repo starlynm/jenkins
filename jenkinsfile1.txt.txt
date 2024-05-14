@@ -53,13 +53,17 @@ pipeline {
     }
     
     post {
-        always {
-            emailext(
-                to: "starlymiracle@gmail.com",
-                subject: "Build Status Email",
-                body: "Build result: ${currentBuild.result}",
-                attachLog: true
-            )
+        failure {
+            to: "starlymiracle@gmail.com",
+            emailtext subject: "Pipleine Failed",
+            body: "Pipeline failed",
+            attachLog: true
+        }
+        success {
+            to: "starlymiracle@gmail.com",
+            emailtext subject: "Pipleine Succesful",
+            body: "Pipeline Succesful",
+            attachLog: true
         }
     }
 }
