@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     
@@ -110,10 +111,13 @@ pipeline {
 }
 
 def sendEmailNotification(stageName, status) {
-    emailext(
-        to: "starlymiracle@gmail.com",
-        subject: "Build Status Email - ${stageName} - ${status}",
-        body: "Build ${status} for ${stageName}",
-        attachLog: true
-    )
+   	mail to: "starlymiracle@gmail.com",
+	subject: "Build Status Email",
+        body: "Build success"
+        attachments: {
+           // Attach build logs from the current stage
+           ( file( "${env.BUILD_LOG}" ) )
+       }
+
 }
+
