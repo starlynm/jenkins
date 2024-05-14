@@ -113,10 +113,10 @@ pipeline {
 }
 
 def sendEmailNotification(stageName, status) {
-   	mail to: "starlymiracle@gmail.com",
-	subject: "Build Status Email",
-        body: "Build success"
-        attachLog: true
-
+    steps {
+        mail to: "starlymiracle@gmail.com",
+            subject: "Build Status Email - ${stageName} - ${status}",
+            body: "Build ${status} for ${stageName}",
+            attachLog: true
+    }
 }
-
