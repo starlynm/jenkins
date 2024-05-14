@@ -4,49 +4,49 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo "Building the code"'
+                echo 'echo "Building the code"'
                     // Use a build automation tool like Maven in jenkins 
                     // Example: sh 'mvn clean 
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                sh 'echo "Running unit tests"'
+                echo 'echo "Running unit tests"'
                 // Use test automation tools for unit and integration tests
                 // Example: sh 'npm test'
             }
         }
         stage('Code Analysis') {
             steps {
-                sh 'echo "Running code analysis"'
+                echo 'echo "Running code analysis"'
                 // Integrate a code analysis tool
                 // Example: sh 'eslint .'
             }
         }
         stage('Security Scan') {
             steps {
-                sh 'echo "Performing security scan"'
+                echo 'echo "Performing security scan"'
                 // Use a security scanning tool
                 // Example: sh 'nmap -p 80 <target>'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                sh 'echo "Deploying to staging server"'
+                echo 'echo "Deploying to staging server"'
                 // Deploy to staging server
                 // Example: sh 'ssh user@staging-server "deploy-script.sh"'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                sh 'echo "Running integration tests on staging"'
+                echo 'echo "Running integration tests on staging"'
                 // Run integration tests on staging
                 // Example: sh 'npm run integration-test'
             }
         }
         stage('Deploy to Production') {
             steps {
-                sh 'echo "Deploying to production server"'
+                echo 'echo "Deploying to production server"'
                 // Deploy to production server
                 // Example: sh 'ssh user@production-server "deploy-script.sh"'
             }
