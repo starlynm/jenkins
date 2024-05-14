@@ -52,18 +52,22 @@ pipeline {
         }
     }
     
-    post {
+        post {
         failure {
-            mail to: "starlymiracle@gmail.com",
-            subject: "Pipleine Failed",
-            body: "Pipeline failed",
-            attachLog: true
+            steps {
+                mail to: "starlymiracle@gmail.com",
+                subject: "Pipeline Failed",
+                body: "Pipeline failed",
+                attachLog: true
+            }
         }
         success {
-            mail to: "starlymiracle@gmail.com",
-            subject: "Pipleine Succesful",
-            body: "Pipeline Succesful",
-            attachLog: true
+            steps {
+                mail to: "starlymiracle@gmail.com",
+                subject: "Pipeline Successful",
+                body: "Pipeline Successful",
+                attachLog: true
+            }
         }
     }
 }
