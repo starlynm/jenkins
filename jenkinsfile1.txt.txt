@@ -54,24 +54,21 @@ pipeline {
     
     post {
         failure {
-            steps {
-                mail to: "starlymiracle@gmail.com",
-                subject: "Pipeline Failed",
+            
+                emailext subject: "Pipeline Failed",
                 body: "Pipeline failed",
-                attachLog: true
-            }
+                attachLog: true,
+                to: "starlymiracle@gmail.com"
+            
         }
         success {
-            steps {
-                mail to: "starlymiracle@gmail.com",
-                subject: "Pipeline Successful",
+                
+                emailext subject: "Pipeline Successful",
                 body: "Pipeline Successful",
-                attachLog: true
-            }
+                attachLog: true,
+                to: "starlymiracle@gmail.com"
+            
         }
-    }
-}
-
     }
 }
 
