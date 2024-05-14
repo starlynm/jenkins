@@ -17,7 +17,8 @@ pipeline {
                 success {
                     mail to: "starlymiracle@gmail.com",
                     subject: "[SIT223] Unit and Integration Tests Result",
-                    body: "Unit and Integration Tests succeeded"
+                    body: "Unit and Integration Tests succeeded",
+                    attachLog: true
                 }
                 failure {
                     mail to: "starlymiracle@gmail.com",
@@ -39,7 +40,9 @@ pipeline {
                 success {
                     mail to: "starlymiracle@gmail.com",
                     subject: "[SIT223] Security Scan Result",
-                    body: "Security Scan succeeded"
+                    body: "Security Scan succeeded",
+                    attachLog: true
+
                 }
                 failure {
                     mail to: "starlymiracle@gmail.com",
