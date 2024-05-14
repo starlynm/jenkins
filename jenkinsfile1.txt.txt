@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     
@@ -111,12 +110,10 @@ pipeline {
 }
 
 def sendEmailNotification(stageName, status) {
-    steps {
-        emailext(
-            to: "starlymiracle@gmail.com",
-            subject: "Build Status Email - ${stageName} - ${status}",
-            body: "Build ${status} for ${stageName}",
-            attachLog: true
-        )
-    }
+    emailext(
+        to: "starlymiracle@gmail.com",
+        subject: "Build Status Email - ${stageName} - ${status}",
+        body: "Build ${status} for ${stageName}",
+        attachLog: true
+    )
 }
