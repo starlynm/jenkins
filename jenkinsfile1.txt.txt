@@ -9,10 +9,7 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "starlymiracle@gmail.com",
-	subject: "Build Status Email",
-        body: "Build success"
-        attachLog: true
+                    sendEmailNotification('Unit and Integration Tests', 'SUCCESS')
                 }
                 failure {
                     sendEmailNotification('Build', 'FAILURE')
