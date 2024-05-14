@@ -1,94 +1,66 @@
 pipeline {
     agent any
-    environment{
-        DIRECTORY_PATH='/Users/shreyasaravanan/Desktop/sit223'
-        TESTING_ENVIRONMENT='JAVA'
-        PRODUCTION_SERVER='AWS EC2'
-    }
-    stages{
-         stage('Delay'){
-            steps{
-                script{
-                    sleep 1
-                    //adding a 1 minute delay
-                }
+    
+    stages {
+        stage('Build') {
+            steps {
+                echo "Build the code using Maven."
+                echo "Compile and package the code."
             }
         }
-        stage('Build'){
-            steps{
-            echo "fetch the source code from the directory path specified by the environment variable"
-            echo "compile the code and generate any neccessary artifacts"
-            echo "Build automation tool used- Gradle"
-            echo "Build started and completed!" 
+        stage('Unit and Integration Tests') {
+            steps {
+                echo "Running unit tests using Katalon"
+                echo "Running integration tests using Selenium"
             }
-        }
-        stage('Test'){
-            steps{
-            echo "running unit tests to ensure the code functions as expected"
-            echo "run integration tests to ensure the different components of the application work together as expected"
-            echo "running unit tests using JUnit and running integration tests using Selenium"
-            echo "Testing started and completed!"    
-            }  
-        post{
+            post {
                 success {
-                    emailext subject: 'Testing successful',
-                    body: 'Testing stage passed successfully.',
-                    to: 'starlymiracle@gmail.com',
-                    attachmentsPattern: '**/*.log'
+                    mail to: "starlymiracle@gmail.com",
+                    subject: "[SIT223] Unit and Integration Tests Result",
+                    body: "Unit and Integration Tests succeeded"
                 }
                 failure {
-                    emailext subject: 'Testing failed',
-                    body: 'Testing stage failed.',
-                    to: 'starlymiracle@gmail.com',
-                    attachmentsPattern: '**/*.log'
+                    mail to: "starlymiracle@gmail.com",
+                    subject: "[SIT223] Unit and Integration Tests Result",
+                    body: "Unit and Integration Tests failed"
                 }
             }
         }
-        
-        stage('Code Analysis'){
-            steps{
-            echo "analysing code to ensure it meets industry standard"
-            echo "Code analysed using SonarQube"
-            echo "Code Analysis started and completed!"    
+        stage('Code Analysis') {
+            steps {
+                echo "Analyse the code and ensure it meets industry standards using Sonar"
             }
         }
-        stage('Security Scan'){
-            steps{
-            echo "Performing security scan using Code Sonar"
-            echo "Security scan completed!"    
+        stage('Security Scan') {
+            steps {
+                echo "Perform a security scan on the code using OWASP"
             }
-        post {
+            post {
                 success {
-                    emailext subject: 'Security scan successful',
-                    body: 'Security scan stage passed successfully.',
-                    to: 'starlymiracle@gmail.com',
-                    attachmentsPattern: '**/*.log'
+                    mail to: "starlymiracle@gmail.com",
+                    subject: "[SIT223] Security Scan Result",
+                    body: "Security Scan succeeded"
                 }
                 failure {
-                    emailext subject: 'Security scan failed',
-                    body: 'Security scan stage failed.',
-                    to: 'starlymiracle@gmail.com',
-                    attachmentsPattern: '**/*.log'
+                    mail to: "starlymiracle@gmail.com",
+                    subject: "[SIT223] Security Scan Result",
+                    body: "Security Scan failed"
                 }
             }
         }
-        
-        stage('Deploy to Staging'){
-            steps{
-            echo "deploy the application to a staging server AWS EC2"
-            echo "Deployment started and completed!"    
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploy the application to an AWS EC2 server"
             }
         }
-        stage('Integration tests'){
-            steps{
-            echo "running integration tests on the staging environment to ensure the application functions as expected in a production-like environment" 
-            echo "integration tests on staging completed!"  
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Run integration tests on the staging environment using Citrus"
             }
         }
-        stage('Deploy to Production'){
-            steps{
-            echo "Deploying code to the production server: ${PRODUCTION_SERVER}"
-            echo "Deployment to Production started and completed!"    
+        stage('Deploy to Production') {
+            steps {
+                echo "Deploy the application to the AWS EC2 server"
             }
         }
     }
