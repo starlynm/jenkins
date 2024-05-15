@@ -6,7 +6,6 @@ pipeline {
             steps {
                 echo 'Building the code using Maven'
                 // Placeholder for actual build commands using Maven
-		emailext attachLog: true, body: 'build status', subject: 'build status', to: 'starlymiracle@gmail.com'
             }
             post {
                 success {
